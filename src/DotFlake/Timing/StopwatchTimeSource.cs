@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics;
-    using Microsoft.AspNetCore.Authentication;
 
     public class StopwatchTimeSource : ITimeSource
     {
@@ -10,7 +9,7 @@
         private readonly TimeSpan _tickDuration;
         private readonly Stopwatch _stopwatch;
 
-        public StopwatchTimeSource(ISystemClock systemClock, StopwatchTimeSourceOptions options)
+        internal StopwatchTimeSource(ISystemClock systemClock, StopwatchTimeSourceOptions options)
         {
             _stopwatch = Stopwatch.StartNew();
             _offset = systemClock.UtcNow - options.Epoch;

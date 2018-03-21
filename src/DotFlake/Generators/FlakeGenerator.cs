@@ -3,6 +3,15 @@
     using System;
     using Timing;
 
+    public class FlakeGeneratorOptions
+    {
+        public byte TimeBits { get; set; } = 41;
+        public byte MachineBits { get; set; } = 10;
+        public byte SequenceBits { get; set; } = 12;
+
+        public long MachineId { get; set; }
+    }
+
     public class FlakeGenerator : IIdGenerator<long>
     {
         private readonly ITimeSource _timeSource;
@@ -10,24 +19,27 @@
         private long _lastTimestamp;
         private long _sequence;
 
-        private const int TimeBits = 41;
-        private const int MachineBits = 10;
-        private const int SequenceBits = 12;
+        private readonly long _maskTime;
+        private readonly long _maskSequence;
 
-        private readonly long MASK_TIME = GetMask(TimeBits);
-        private readonly long MASK_MACHINE = GetMask(MachineBits);
-        private readonly long MASK_SEQUENCE = GetMask(SequenceBits);
+        private readonly int _shiftTime;
+        private readonly int _shiftGenerator;
 
-        private const int SHIFT_TIME = MachineBits + SequenceBits;
-        private const int SHIFT_GENERATOR = SequenceBits;
-
-        private readonly long _machineId = 0;
+        private readonly long _machineId;
 
         private readonly object _lock = new object();
 
-        public FlakeGenerator(ITimeSource timeSource)
+        public FlakeGenerator(ITimeSource timeSource, FlakeGeneratorOptions options)
         {
             _timeSource = timeSource;
+
+            _maskTime = GetMask(options.TimeBits);
+            _maskSequence = GetMask(options.SequenceBits);
+
+            _shiftTime = options.MachineBits + options.SequenceBits;
+            _shiftGenerator = options.SequenceBits;
+
+            _machineId = options.MachineId;
         }
 
         public long Next()
@@ -35,14 +47,14 @@
             lock (_lock)
             {
                 var ticks = _timeSource.GetTicks();
-                var timestamp = ticks & MASK_TIME;
+                var timestamp = ticks & _maskTime;
 
                 if(timestamp < _lastTimestamp || ticks < 0)
                     throw new Exception("You have travelled through time");
 
                 if (timestamp == _lastTimestamp)
                 {
-                    if (_sequence < MASK_SEQUENCE)
+                    if (_sequence < _maskSequence)
                         ++_sequence;
                     else
                         throw new Exception("Too many ids generated. Try again soon");
@@ -55,8 +67,8 @@
 
                 unchecked
                 {
-                    return (timestamp << SHIFT_TIME)
-                           + (_machineId << SHIFT_GENERATOR)         // GeneratorId is already masked, we only need to shift
+                    return (timestamp << _shiftTime)
+                           + (_machineId << _shiftGenerator)         // GeneratorId is already masked, we only need to shift
                            + _sequence;
                 }
             }

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotFlake", "src\DotFlake\DotFlake.csproj", "{F91C3501-C898-468B-A50C-D5F9BF4E5C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotFlake", "src\DotFlake\DotFlake.csproj", "{F91C3501-C898-468B-A50C-D5F9BF4E5C4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7DDA14CB-4999-49B7-8206-D67DA9FDA721}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotFlake.Tests.Performance", "tests\DotFlake.Tests.Performance\DotFlake.Tests.Performance.csproj", "{D3C672C8-841F-487C-B5D6-3788EF0EF449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{F91C3501-C898-468B-A50C-D5F9BF4E5C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F91C3501-C898-468B-A50C-D5F9BF4E5C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F91C3501-C898-468B-A50C-D5F9BF4E5C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C672C8-841F-487C-B5D6-3788EF0EF449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C672C8-841F-487C-B5D6-3788EF0EF449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C672C8-841F-487C-B5D6-3788EF0EF449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C672C8-841F-487C-B5D6-3788EF0EF449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D3C672C8-841F-487C-B5D6-3788EF0EF449} = {7DDA14CB-4999-49B7-8206-D67DA9FDA721}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AFD4FC4-E6F7-4BB3-85EC-6F54FF4AE0FC}

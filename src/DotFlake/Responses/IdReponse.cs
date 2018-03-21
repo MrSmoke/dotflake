@@ -1,4 +1,4 @@
-﻿namespace DotFlake.Controllers
+﻿namespace DotFlake.Responses
 {
     public class IdReponse<T>
     {
