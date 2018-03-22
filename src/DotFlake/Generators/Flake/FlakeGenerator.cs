@@ -1,18 +1,9 @@
-﻿namespace DotFlake.Generators
+﻿namespace DotFlake.Generators.Flake
 {
     using System;
-    using Timing;
+    using Sources.Timing;
 
-    public class FlakeGeneratorOptions
-    {
-        public byte TimeBits { get; set; } = 41;
-        public byte MachineBits { get; set; } = 10;
-        public byte SequenceBits { get; set; } = 12;
-
-        public long MachineId { get; set; }
-    }
-
-    public class FlakeGenerator : IIdGenerator<long>
+    public class FlakeGenerator : IIdGenerator
     {
         private readonly ITimeSource _timeSource;
 
@@ -29,20 +20,26 @@
 
         private readonly object _lock = new object();
 
-        public FlakeGenerator(ITimeSource timeSource, FlakeGeneratorOptions options)
+        public FlakeGenerator(FlakeGeneratorOptions options)
         {
-            _timeSource = timeSource;
+            _timeSource = options.TimeSource;
+            _machineId = options.MachineIdSource.GetMachineId();
 
+            //masks
             _maskTime = GetMask(options.TimeBits);
             _maskSequence = GetMask(options.SequenceBits);
 
+            //shifts
             _shiftTime = options.MachineBits + options.SequenceBits;
             _shiftGenerator = options.SequenceBits;
-
-            _machineId = options.MachineId;
         }
 
-        public long Next()
+        public object Next()
+        {
+            return NextInternal();
+        }
+
+        private long NextInternal()
         {
             lock (_lock)
             {

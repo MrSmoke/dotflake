@@ -1,4 +1,4 @@
-﻿namespace DotFlake.Timing
+﻿namespace DotFlake.Sources.Timing
 {
     using System;
     using System.Diagnostics;

@@ -4,6 +4,7 @@ namespace DotFlake.Tests.Performance
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Running;
+    using Generators;
 
     class Program
     {
@@ -13,17 +14,17 @@ namespace DotFlake.Tests.Performance
         }
     }
 
-    public class DummyLongGenerator : IIdGenerator<long>
+    public class DummyLongGenerator : IIdGenerator
     {
-        public long Next()
+        public object Next()
         {
             return 1234567L;
         }
     }
 
-    public class DummyStringGenerator : IIdGenerator<string>
+    public class DummyStringGenerator : IIdGenerator
     {
-        public string Next()
+        public object Next()
         {
             return "Hello world";
         }
@@ -36,7 +37,7 @@ namespace DotFlake.Tests.Performance
         [GlobalSetup]
         public void Setup()
         {
-            _generatorFactory = new IdGeneratorFactory();
+            _generatorFactory = new IdGeneratorFactory(null);
 
             _generatorFactory.AddGenerator("test", new DummyLongGenerator());
             _generatorFactory.AddGenerator("testString", new DummyStringGenerator());

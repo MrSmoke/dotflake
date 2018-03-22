@@ -1,0 +1,16 @@
+﻿{
+  "generators": {
+    "beep": {
+      "generator": "flake"
+    },
+    "boop": {
+      "generator": "flake"
+    }
+  },
+  "machineIdSource": {
+    "type": "static",
+    "options": {
+      "machineId": 1
+    }
+  }
+}
